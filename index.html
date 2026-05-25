@@ -6,283 +6,82 @@
 <title>ตารางเวรสวดมนต์ โรงเรียนบ้านสองพี่น้อง</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Mitr:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --green-dark: #2d5a3d;
-    --green-mid: #4a7c59;
-    --green-light: #7aab8a;
-    --green-pale: #c8dfd0;
-    --green-mist: #eaf4ee;
-    --cream: #fdf8f0;
-    --cream-dark: #f5ead8;
-    --cream-border: #e8d9c0;
-    --brown: #8b6b47;
-    --text-dark: #2c3e2d;
-    --text-mid: #4a5e4b;
-    --text-light: #7a9080;
-    --swap-pending: #f59e0b;
-    --swap-done: #4a7c59;
-    --swap-cancel: #dc2626;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Sarabun', sans-serif;
-    background: var(--cream);
-    color: var(--text-dark);
-    min-height: 100vh;
-  }
-
-  /* leaf pattern background */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      radial-gradient(circle at 15% 20%, rgba(122,171,138,0.08) 0%, transparent 50%),
-      radial-gradient(circle at 85% 80%, rgba(74,124,89,0.06) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(200,223,208,0.05) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
-  }
-
-  .container { max-width: 900px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 1; }
-
-  /* header */
-  header {
-    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
-    padding: 0; margin-bottom: 32px;
-    position: relative; overflow: hidden;
-  }
-  header::after {
-    content: '🌿';
-    position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
-    font-size: 64px; opacity: 0.15;
-  }
-  .header-inner { padding: 28px 24px 24px; }
-  .school-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.85);
-    font-size: 12px; padding: 3px 10px;
-    border-radius: 20px; margin-bottom: 8px;
-    border: 1px solid rgba(255,255,255,0.2);
-    letter-spacing: 0.03em;
-  }
-  header h1 {
-    font-family: 'Mitr', sans-serif;
-    font-size: clamp(20px, 5vw, 28px);
-    font-weight: 600; color: #fff;
-    line-height: 1.3;
-  }
-  header p { color: rgba(255,255,255,0.75); font-size: 14px; margin-top: 4px; }
-
-  /* tabs */
-  .tabs {
-    display: flex; gap: 0;
-    background: var(--green-mist);
-    border: 1.5px solid var(--green-pale);
-    border-radius: 12px; padding: 4px;
-    margin-bottom: 20px;
-  }
-  .tab-btn {
-    flex: 1; padding: 9px 16px;
-    background: none; border: none;
-    border-radius: 9px; cursor: pointer;
-    font-family: 'Sarabun', sans-serif;
-    font-size: 14px; font-weight: 500;
-    color: var(--text-mid);
-    transition: all 0.2s;
-  }
-  .tab-btn.active {
-    background: var(--green-mid);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(74,124,89,0.25);
-  }
-  .tab-btn:hover:not(.active) { background: var(--green-pale); }
-
-  /* search & filter */
-  .filter-bar {
-    display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
-  }
-  .filter-bar input, .filter-bar select {
-    flex: 1; min-width: 160px;
-    padding: 9px 14px;
-    border: 1.5px solid var(--cream-border);
-    border-radius: 10px;
-    background: #fff;
-    font-family: 'Sarabun', sans-serif;
-    font-size: 14px; color: var(--text-dark);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .filter-bar input:focus, .filter-bar select:focus {
-    border-color: var(--green-mid);
-  }
-
-  /* upcoming banner */
-  .upcoming-card {
-    background: linear-gradient(120deg, var(--green-dark), var(--green-mid));
-    border-radius: 14px; padding: 16px 20px;
-    margin-bottom: 20px; color: #fff;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .upcoming-icon { font-size: 36px; flex-shrink: 0; }
-  .upcoming-label { font-size: 12px; opacity: 0.75; margin-bottom: 2px; }
-  .upcoming-name { font-family: 'Mitr', sans-serif; font-size: 18px; font-weight: 600; }
-  .upcoming-date { font-size: 13px; opacity: 0.8; margin-top: 2px; }
-
-  /* table */
-  .month-section { margin-bottom: 24px; }
-  .month-label {
-    font-family: 'Mitr', sans-serif;
-    font-size: 13px; font-weight: 500;
-    color: var(--green-dark);
-    background: var(--green-mist);
-    border-left: 3px solid var(--green-mid);
-    padding: 6px 12px; border-radius: 0 8px 8px 0;
-    margin-bottom: 8px;
-    letter-spacing: 0.02em;
-  }
-  .duty-row {
-    display: flex; align-items: center;
-    background: #fff;
-    border: 1px solid var(--cream-border);
-    border-radius: 10px; padding: 12px 16px;
-    margin-bottom: 6px; gap: 14px;
-    transition: box-shadow 0.15s, transform 0.15s;
-    cursor: default;
-  }
-  .duty-row:hover { box-shadow: 0 2px 12px rgba(74,124,89,0.12); transform: translateY(-1px); }
-  .duty-row.past { opacity: 0.45; }
-  .duty-row.today { border-color: var(--green-mid); box-shadow: 0 0 0 2px rgba(74,124,89,0.15); }
-  .duty-num {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--green-mist); color: var(--green-dark);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600; flex-shrink: 0;
-  }
-  .duty-date { flex: 1; font-size: 14px; color: var(--text-mid); }
-  .duty-date strong { display: block; font-size: 15px; color: var(--text-dark); font-weight: 500; }
-  .duty-teacher {
-    font-size: 14px; font-weight: 500; color: var(--green-dark);
-    text-align: right; flex-shrink: 0;
-  }
-  .swap-badge {
-    font-size: 11px; padding: 2px 8px; border-radius: 20px;
-    font-weight: 500; margin-left: 8px;
-  }
-  .swap-pending { background: #fef3c7; color: #92400e; }
-  .swap-done { background: #d1fae5; color: #065f46; }
-  .btn-swap {
-    padding: 5px 12px; border-radius: 8px;
-    background: var(--cream-dark); border: 1px solid var(--cream-border);
-    color: var(--brown); font-size: 12px; font-weight: 500;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    transition: all 0.15s; flex-shrink: 0;
-  }
-  .btn-swap:hover { background: var(--green-pale); border-color: var(--green-light); color: var(--green-dark); }
-
-  /* print btn */
-  .actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-  .btn-primary {
-    padding: 10px 20px; border-radius: 10px;
-    background: var(--green-mid); border: none;
-    color: #fff; font-size: 14px; font-weight: 500;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    transition: background 0.2s;
-  }
-  .btn-primary:hover { background: var(--green-dark); }
-  .btn-secondary {
-    padding: 10px 20px; border-radius: 10px;
-    background: #fff; border: 1.5px solid var(--cream-border);
-    color: var(--text-mid); font-size: 14px; font-weight: 500;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { border-color: var(--green-light); color: var(--green-dark); }
-
-  /* modal */
-  .modal-bg {
-    display: none; position: fixed; inset: 0;
-    background: rgba(44,62,45,0.45); z-index: 100;
-    align-items: center; justify-content: center; padding: 16px;
-  }
-  .modal-bg.open { display: flex; }
-  .modal {
-    background: var(--cream); border-radius: 16px;
-    padding: 28px; width: 100%; max-width: 480px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  }
-  .modal h2 { font-family: 'Mitr', sans-serif; font-size: 18px; margin-bottom: 6px; color: var(--green-dark); }
-  .modal p { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
-  .form-group { margin-bottom: 14px; }
-  .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; color: var(--text-mid); }
-  .form-group select, .form-group textarea, .form-group input {
-    width: 100%; padding: 9px 12px;
-    border: 1.5px solid var(--cream-border); border-radius: 9px;
-    font-family: 'Sarabun', sans-serif; font-size: 14px;
-    background: #fff; color: var(--text-dark); outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-group select:focus, .form-group textarea:focus { border-color: var(--green-mid); }
-  .form-group textarea { height: 80px; resize: none; }
-  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-  .modal-actions .btn-primary { flex: 1; }
-  .modal-actions .btn-secondary { flex: 1; }
-
-  /* swap list tab */
-  .swap-item {
-    background: #fff; border: 1px solid var(--cream-border);
-    border-radius: 10px; padding: 14px 16px; margin-bottom: 8px;
-  }
-  .swap-item .si-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .swap-item .si-badge { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
-  .swap-item .si-id { font-size: 12px; color: var(--text-light); }
-  .swap-item .si-body { font-size: 13px; color: var(--text-mid); line-height: 1.7; }
-  .swap-item .si-body strong { color: var(--text-dark); }
-  .swap-item .si-actions { display: flex; gap: 8px; margin-top: 10px; }
-  .btn-confirm { padding: 6px 14px; border-radius: 8px; background: var(--green-mist); border: 1px solid var(--green-pale); color: var(--green-dark); font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Sarabun', sans-serif; }
-  .btn-confirm:hover { background: var(--green-pale); }
-  .btn-cancel-swap { padding: 6px 14px; border-radius: 8px; background: #fff5f5; border: 1px solid #fecaca; color: #dc2626; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Sarabun', sans-serif; }
-  .btn-cancel-swap:hover { background: #fee2e2; }
-
-  .empty-state { text-align: center; padding: 48px 24px; color: var(--text-light); }
-  .empty-state .icon { font-size: 48px; display: block; margin-bottom: 12px; }
-  .empty-state p { font-size: 14px; }
-
-  /* summary */
-  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 24px; }
-  .summary-card {
-    background: #fff; border: 1px solid var(--cream-border);
-    border-radius: 12px; padding: 14px 16px;
-  }
-  .summary-card .sc-name { font-size: 13px; color: var(--text-mid); margin-bottom: 4px; }
-  .summary-card .sc-num { font-family: 'Mitr', sans-serif; font-size: 22px; color: var(--green-dark); font-weight: 600; }
-  .summary-card .sc-sub { font-size: 12px; color: var(--text-light); }
-
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--green-dark); color: #fff;
-    padding: 10px 24px; border-radius: 20px;
-    font-size: 14px; z-index: 200;
-    opacity: 0; transition: opacity 0.3s;
-    pointer-events: none;
-  }
-  .toast.show { opacity: 1; }
-
-  @media print {
-    header::after, .tabs, .filter-bar, .actions, .btn-swap, .modal-bg, .toast { display: none !important; }
-    .duty-row { box-shadow: none !important; transform: none !important; }
-    body { background: white; }
-  }
-
-  @media (max-width: 520px) {
-    .duty-date strong { font-size: 13px; }
-    .duty-teacher { font-size: 13px; }
-  }
+:root{--gd:#2d5a3d;--gm:#4a7c59;--gl:#7aab8a;--gp:#c8dfd0;--gmist:#eaf4ee;--cr:#fdf8f0;--cbd:#e8d9c0;--br:#8b6b47;--td:#2c3e2d;--tm:#4a5e4b;--tl:#7a9080;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sarabun',sans-serif;background:var(--cr);color:var(--td);min-height:100vh;}
+.container{max-width:900px;margin:0 auto;padding:0 16px;}
+header{background:linear-gradient(135deg,var(--gd),var(--gm) 60%,var(--gl));margin-bottom:24px;position:relative;overflow:hidden;}
+header::after{content:'🌿';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:64px;opacity:0.15;}
+.header-inner{padding:24px;}
+.school-badge{display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:12px;padding:3px 10px;border-radius:20px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.2);}
+header h1{font-family:'Mitr',sans-serif;font-size:clamp(18px,5vw,26px);font-weight:600;color:#fff;line-height:1.3;}
+header p{color:rgba(255,255,255,0.75);font-size:14px;margin-top:4px;}
+.tabs{display:flex;background:var(--gmist);border:1.5px solid var(--gp);border-radius:12px;padding:4px;margin-bottom:20px;}
+.tab-btn{flex:1;padding:9px 8px;background:none;border:none;border-radius:9px;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:500;color:var(--tm);transition:all 0.2s;}
+.tab-btn.active{background:var(--gm);color:#fff;box-shadow:0 2px 8px rgba(74,124,89,0.25);}
+.filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-bar input,.filter-bar select{flex:1;min-width:140px;padding:9px 14px;border:1.5px solid var(--cbd);border-radius:10px;background:#fff;font-family:'Sarabun',sans-serif;font-size:14px;color:var(--td);outline:none;}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--gm);}
+.upcoming-card{background:linear-gradient(120deg,var(--gd),var(--gm));border-radius:14px;padding:14px 18px;margin-bottom:16px;color:#fff;display:flex;align-items:center;gap:14px;}
+.upcoming-icon{font-size:32px;flex-shrink:0;}
+.upcoming-label{font-size:12px;opacity:0.75;margin-bottom:2px;}
+.upcoming-name{font-family:'Mitr',sans-serif;font-size:17px;font-weight:600;}
+.upcoming-date{font-size:13px;opacity:0.8;margin-top:2px;}
+.month-section{margin-bottom:20px;}
+.month-label{font-family:'Mitr',sans-serif;font-size:13px;font-weight:500;color:var(--gd);background:var(--gmist);border-left:3px solid var(--gm);padding:6px 12px;border-radius:0 8px 8px 0;margin-bottom:8px;}
+.duty-row{display:flex;align-items:center;background:#fff;border:1px solid var(--cbd);border-radius:10px;padding:11px 14px;margin-bottom:6px;gap:12px;transition:box-shadow 0.15s;}
+.duty-row:hover{box-shadow:0 2px 10px rgba(74,124,89,0.12);}
+.duty-row.past{opacity:0.45;}
+.duty-row.today{border-color:var(--gm);box-shadow:0 0 0 2px rgba(74,124,89,0.15);}
+.duty-num{width:26px;height:26px;border-radius:50%;background:var(--gmist);color:var(--gd);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+.duty-date{flex:1;font-size:13px;color:var(--tm);}
+.duty-date strong{display:block;font-size:14px;color:var(--td);font-weight:500;}
+.duty-teacher{font-size:13px;font-weight:500;color:var(--gd);text-align:right;flex-shrink:0;}
+.swap-badge{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;margin-left:6px;}
+.swap-pending{background:#fef3c7;color:#92400e;}
+.swap-done{background:#d1fae5;color:#065f46;}
+.btn-swap{padding:5px 10px;border-radius:8px;background:#f5ead8;border:1px solid var(--cbd);color:var(--br);font-size:12px;font-weight:500;cursor:pointer;font-family:'Sarabun',sans-serif;transition:all 0.15s;flex-shrink:0;}
+.btn-swap:hover{background:var(--gp);border-color:var(--gl);color:var(--gd);}
+.actions{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.btn-primary{padding:9px 18px;border-radius:10px;background:var(--gm);border:none;color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Sarabun',sans-serif;}
+.btn-primary:hover{background:var(--gd);}
+.btn-secondary{padding:9px 18px;border-radius:10px;background:#fff;border:1.5px solid var(--cbd);color:var(--tm);font-size:14px;font-weight:500;cursor:pointer;font-family:'Sarabun',sans-serif;}
+.btn-secondary:hover{border-color:var(--gl);color:var(--gd);}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(44,62,45,0.5);z-index:100;align-items:center;justify-content:center;padding:16px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--cr);border-radius:16px;padding:24px;width:100%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal h2{font-family:'Mitr',sans-serif;font-size:17px;margin-bottom:4px;color:var(--gd);}
+.modal p{font-size:13px;color:var(--tl);margin-bottom:16px;}
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;font-size:13px;font-weight:500;margin-bottom:4px;color:var(--tm);}
+.form-group select,.form-group textarea{width:100%;padding:8px 11px;border:1.5px solid var(--cbd);border-radius:9px;font-family:'Sarabun',sans-serif;font-size:13px;background:#fff;color:var(--td);outline:none;}
+.form-group select:focus,.form-group textarea:focus{border-color:var(--gm);}
+.form-group textarea{height:70px;resize:none;}
+.modal-actions{display:flex;gap:10px;margin-top:16px;}
+.modal-actions .btn-primary,.modal-actions .btn-secondary{flex:1;}
+.swap-item{background:#fff;border:1px solid var(--cbd);border-radius:10px;padding:13px 15px;margin-bottom:8px;}
+.swap-item .si-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.swap-item .si-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.swap-item .si-id{font-size:12px;color:var(--tl);}
+.swap-item .si-body{font-size:13px;color:var(--tm);line-height:1.7;}
+.swap-item .si-body strong{color:var(--td);}
+.swap-item .si-actions{display:flex;gap:8px;margin-top:10px;}
+.btn-confirm{padding:6px 12px;border-radius:8px;background:var(--gmist);border:1px solid var(--gp);color:var(--gd);font-size:12px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;}
+.btn-cancel-swap{padding:6px 12px;border-radius:8px;background:#fff5f5;border:1px solid #fecaca;color:#dc2626;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;}
+.empty-state{text-align:center;padding:48px 24px;color:var(--tl);}
+.empty-state .icon{font-size:48px;display:block;margin-bottom:12px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px;}
+.summary-card{background:#fff;border:1px solid var(--cbd);border-radius:12px;padding:13px 15px;}
+.summary-card .sc-name{font-size:12px;color:var(--tm);margin-bottom:4px;}
+.summary-card .sc-num{font-family:'Mitr',sans-serif;font-size:22px;color:var(--gd);font-weight:600;}
+.summary-card .sc-sub{font-size:11px;color:var(--tl);}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--gd);color:#fff;padding:10px 24px;border-radius:20px;font-size:14px;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+.loading{text-align:center;padding:40px;color:var(--tl);font-size:14px;}
+@media print{header::after,.tabs,.filter-bar,.actions,.btn-swap,.modal-bg,.toast{display:none!important;}body{background:white;}}
 </style>
 </head>
 <body>
-
 <header>
   <div class="header-inner container">
     <div class="school-badge">โรงเรียนบ้านสองพี่น้อง · สพป.ระยอง เขต ๒</div>
@@ -290,18 +89,13 @@
     <p>ปีการศึกษา ๒๕๖๙ · ทุกวันศุกร์</p>
   </div>
 </header>
-
 <div class="container">
-
   <div id="upcomingBanner"></div>
-
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('schedule')">📅 ตารางเวร</button>
     <button class="tab-btn" onclick="switchTab('swaps')">🔄 คำขอแลกเวร</button>
     <button class="tab-btn" onclick="switchTab('summary')">📊 สรุป</button>
   </div>
-
-  <!-- SCHEDULE TAB -->
   <div id="tab-schedule">
     <div class="filter-bar">
       <input type="text" id="searchInput" placeholder="🔍 ค้นหาชื่อครู..." oninput="renderSchedule()">
@@ -315,25 +109,16 @@
       <button class="btn-primary" onclick="window.print()">🖨️ พิมพ์ตาราง</button>
       <button class="btn-secondary" onclick="refreshData()">🔄 รีเฟรช</button>
     </div>
-    <div id="scheduleList"></div>
+    <div id="scheduleList"><div class="loading">⏳ กำลังโหลด...</div></div>
   </div>
-
-  <!-- SWAPS TAB -->
   <div id="tab-swaps" style="display:none">
-    <div class="actions">
-      <button class="btn-secondary" onclick="refreshData()">🔄 รีเฟรช</button>
-    </div>
+    <div class="actions"><button class="btn-secondary" onclick="refreshData()">🔄 รีเฟรช</button></div>
     <div id="swapList"></div>
   </div>
-
-  <!-- SUMMARY TAB -->
   <div id="tab-summary" style="display:none">
     <div id="summaryContent"></div>
   </div>
-
 </div>
-
-<!-- SWAP MODAL -->
 <div class="modal-bg" id="swapModal">
   <div class="modal">
     <h2>ขอแลกเวรสวดมนต์</h2>
@@ -356,348 +141,178 @@
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-// ========== DATA ==========
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8R2fHzusI2e4cQ2taR0m9miDY71c2udoG9KzCi23w0bnujSzrAkZD9XUu0gzNhj_x/exec";
-
-const SCHEDULE_DATA = [
-  {date:"2026-05-22",display:"วันศุกร์ที่ 22 พฤษภาคม พ.ศ. 2569",teacher:"นางสาววรรณศา ไชยรินทร์",term:1},
-  {date:"2026-05-29",display:"วันศุกร์ที่ 29 พฤษภาคม พ.ศ. 2569",teacher:"นางสาวธัญวรัตม์ บุญให้",term:1},
-  {date:"2026-06-05",display:"วันศุกร์ที่ 5 มิถุนายน พ.ศ. 2569",teacher:"นายธนายุต วงศ์มาก",term:1},
-  {date:"2026-06-12",display:"วันศุกร์ที่ 12 มิถุนายน พ.ศ. 2569",teacher:"นางสาวอรอุมา คุ้มหอม",term:1},
-  {date:"2026-06-19",display:"วันศุกร์ที่ 19 มิถุนายน พ.ศ. 2569",teacher:"นางสาวธารดา สินธุวาณิชย์",term:1},
-  {date:"2026-06-26",display:"วันศุกร์ที่ 26 มิถุนายน พ.ศ. 2569",teacher:"นางสาวนลินรัตน์ โคตะวินนท์",term:1},
-  {date:"2026-07-03",display:"วันศุกร์ที่ 3 กรกฎาคม พ.ศ. 2569",teacher:"นางวชิราภรณ์ ปัคมา",term:1},
-  {date:"2026-07-10",display:"วันศุกร์ที่ 10 กรกฎาคม พ.ศ. 2569",teacher:"นางสาวชมพูนุช อ่อนนนท์",term:1},
-  {date:"2026-07-17",display:"วันศุกร์ที่ 17 กรกฎาคม พ.ศ. 2569",teacher:"นางสาววรรณศา ไชยรินทร์",term:1},
-  {date:"2026-07-24",display:"วันศุกร์ที่ 24 กรกฎาคม พ.ศ. 2569",teacher:"นางสาวธัญวรัตม์ บุญให้",term:1},
-  {date:"2026-07-31",display:"วันศุกร์ที่ 31 กรกฎาคม พ.ศ. 2569",teacher:"นายธนายุต วงศ์มาก",term:1},
-  {date:"2026-08-07",display:"วันศุกร์ที่ 7 สิงหาคม พ.ศ. 2569",teacher:"นางสาวอรอุมา คุ้มหอม",term:1},
-  {date:"2026-08-14",display:"วันศุกร์ที่ 14 สิงหาคม พ.ศ. 2569",teacher:"นางสาวธารดา สินธุวาณิชย์",term:1},
-  {date:"2026-08-21",display:"วันศุกร์ที่ 21 สิงหาคม พ.ศ. 2569",teacher:"นางสาวนลินรัตน์ โคตะวินนท์",term:1},
-  {date:"2026-08-28",display:"วันศุกร์ที่ 28 สิงหาคม พ.ศ. 2569",teacher:"นางวชิราภรณ์ ปัคมา",term:1},
-  {date:"2026-09-04",display:"วันศุกร์ที่ 4 กันยายน พ.ศ. 2569",teacher:"นางสาวชมพูนุช อ่อนนนท์",term:1},
-  {date:"2026-09-11",display:"วันศุกร์ที่ 11 กันยายน พ.ศ. 2569",teacher:"นางสาววรรณศา ไชยรินทร์",term:1},
-  {date:"2026-09-18",display:"วันศุกร์ที่ 18 กันยายน พ.ศ. 2569",teacher:"นางสาวธัญวรัตม์ บุญให้",term:1},
-  {date:"2026-09-25",display:"วันศุกร์ที่ 25 กันยายน พ.ศ. 2569",teacher:"นายธนายุต วงศ์มาก",term:1},
-  {date:"2026-10-02",display:"วันศุกร์ที่ 2 ตุลาคม พ.ศ. 2569",teacher:"นางสาวอรอุมา คุ้มหอม",term:1},
-  {date:"2026-10-09",display:"วันศุกร์ที่ 9 ตุลาคม พ.ศ. 2569",teacher:"นางสาวธารดา สินธุวาณิชย์",term:1},
-  {date:"2026-11-06",display:"วันศุกร์ที่ 6 พฤศจิกายน พ.ศ. 2569",teacher:"นางสาวนลินรัตน์ โคตะวินนท์",term:2},
-  {date:"2026-11-13",display:"วันศุกร์ที่ 13 พฤศจิกายน พ.ศ. 2569",teacher:"นางวชิราภรณ์ ปัคมา",term:2},
-  {date:"2026-11-20",display:"วันศุกร์ที่ 20 พฤศจิกายน พ.ศ. 2569",teacher:"นางสาวชมพูนุช อ่อนนนท์",term:2},
-  {date:"2026-11-27",display:"วันศุกร์ที่ 27 พฤศจิกายน พ.ศ. 2569",teacher:"นางสาววรรณศา ไชยรินทร์",term:2},
-  {date:"2026-12-04",display:"วันศุกร์ที่ 4 ธันวาคม พ.ศ. 2569",teacher:"นางสาวธัญวรัตม์ บุญให้",term:2},
-  {date:"2026-12-11",display:"วันศุกร์ที่ 11 ธันวาคม พ.ศ. 2569",teacher:"นายธนายุต วงศ์มาก",term:2},
-  {date:"2026-12-18",display:"วันศุกร์ที่ 18 ธันวาคม พ.ศ. 2569",teacher:"นางสาวอรอุมา คุ้มหอม",term:2},
-  {date:"2026-12-25",display:"วันศุกร์ที่ 25 ธันวาคม พ.ศ. 2569",teacher:"นางสาวธารดา สินธุวาณิชย์",term:2},
-  {date:"2027-01-08",display:"วันศุกร์ที่ 8 มกราคม พ.ศ. 2570",teacher:"นางสาวนลินรัตน์ โคตะวินนท์",term:2},
-  {date:"2027-01-15",display:"วันศุกร์ที่ 15 มกราคม พ.ศ. 2570",teacher:"นางวชิราภรณ์ ปัคมา",term:2},
-  {date:"2027-01-22",display:"วันศุกร์ที่ 22 มกราคม พ.ศ. 2570",teacher:"นางสาวชมพูนุช อ่อนนนท์",term:2},
-  {date:"2027-01-29",display:"วันศุกร์ที่ 29 มกราคม พ.ศ. 2570",teacher:"นางสาววรรณศา ไชยรินทร์",term:2},
-  {date:"2027-02-05",display:"วันศุกร์ที่ 5 กุมภาพันธ์ พ.ศ. 2570",teacher:"นางสาวธัญวรัตม์ บุญให้",term:2},
-  {date:"2027-02-12",display:"วันศุกร์ที่ 12 กุมภาพันธ์ พ.ศ. 2570",teacher:"นายธนายุต วงศ์มาก",term:2},
-  {date:"2027-02-19",display:"วันศุกร์ที่ 19 กุมภาพันธ์ พ.ศ. 2570",teacher:"นางสาวอรอุมา คุ้มหอม",term:2},
-  {date:"2027-02-26",display:"วันศุกร์ที่ 26 กุมภาพันธ์ พ.ศ. 2570",teacher:"นางสาวธารดา สินธุวาณิชย์",term:2},
-  {date:"2027-03-05",display:"วันศุกร์ที่ 5 มีนาคม พ.ศ. 2570",teacher:"นางสาวนลินรัตน์ โคตะวินนท์",term:2},
-  {date:"2027-03-12",display:"วันศุกร์ที่ 12 มีนาคม พ.ศ. 2570",teacher:"นางวชิราภรณ์ ปัคมา",term:2},
-  {date:"2027-03-19",display:"วันศุกร์ที่ 19 มีนาคม พ.ศ. 2570",teacher:"นางสาวชมพูนุช อ่อนนนท์",term:2},
-  {date:"2027-03-26",display:"วันศุกร์ที่ 26 มีนาคม พ.ศ. 2570",teacher:"นางสาววรรณศา ไชยรินทร์",term:2}
-];
-
-let schedule = JSON.parse(JSON.stringify(SCHEDULE_DATA));
+let schedule = [];
 let swapRequests = [];
-let isOnline = false;
+let cbCount = 0;
 
-async function loadFromServer() {
-  if (!SCRIPT_URL) return;
+function jsonp(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = '__cb' + (cbCount++);
+    const script = document.createElement('script');
+    const timeout = setTimeout(() => {
+      delete window[cbName];
+      document.body.removeChild(script);
+      reject(new Error('timeout'));
+    }, 10000);
+    window[cbName] = function(data) {
+      clearTimeout(timeout);
+      delete window[cbName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    params.callback = cbName;
+    script.src = SCRIPT_URL + '?' + new URLSearchParams(params);
+    script.onerror = () => { clearTimeout(timeout); reject(new Error('error')); };
+    document.body.appendChild(script);
+  });
+}
+
+async function loadData() {
   try {
-    showToast('⏳ กำลังโหลดข้อมูลจาก server...');
-    const [schedRes, swapsRes] = await Promise.all([
-      fetch(SCRIPT_URL + '?action=getSchedule').then(r=>r.json()).catch(()=>null),
-      fetch(SCRIPT_URL + '?action=getSwapRequests').then(r=>r.json()).catch(()=>null)
+    const [sched, swaps] = await Promise.all([
+      jsonp({action:'getSchedule'}),
+      jsonp({action:'getSwapRequests'})
     ]);
-    if (schedRes && Array.isArray(schedRes)) {
-      schedule = schedRes.map(r => ({ date: r.date, display: r.display, teacher: r.teacher, term: Number(r.term) }));
-      isOnline = true;
-    }
-    if (swapsRes && Array.isArray(swapsRes)) {
-      swapRequests = swapsRes;
-    }
-    showToast(isOnline ? '✅ โหลดข้อมูลสำเร็จ' : '⚠️ ใช้ข้อมูลสำรอง');
+    if (Array.isArray(sched)) schedule = sched.map(r => ({...r, term: Number(r.term)}));
+    if (Array.isArray(swaps)) swapRequests = swaps;
   } catch(e) {
-    showToast('⚠️ ไม่สามารถเชื่อมต่อ server ได้');
+    showToast('⚠️ โหลดข้อมูลไม่ได้ กรุณารีเฟรช');
   }
 }
 
-// ========== UTILS ==========
-function toGregorian(thaiDate) {
-  // thaiDate like "2026-05-22" (already gregorian in our data)
-  return new Date(thaiDate);
-}
-
-function todayStr() {
-  const d = new Date();
-  return d.toISOString().split('T')[0];
-}
+function todayStr() { return new Date().toISOString().split('T')[0]; }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ========== UPCOMING ==========
 function renderUpcoming() {
   const today = todayStr();
   const upcoming = schedule.find(s => s.date >= today);
   const el = document.getElementById('upcomingBanner');
   if (!upcoming) { el.innerHTML = ''; return; }
   const isToday = upcoming.date === today;
-  el.innerHTML = `
-    <div class="upcoming-card">
-      <div class="upcoming-icon">${isToday ? '🔔' : '📌'}</div>
-      <div>
-        <div class="upcoming-label">${isToday ? 'วันนี้มีเวรสวดมนต์!' : 'เวรสวดมนต์ครั้งถัดไป'}</div>
-        <div class="upcoming-name">${upcoming.teacher}</div>
-        <div class="upcoming-date">${upcoming.display}</div>
-      </div>
-    </div>`;
+  el.innerHTML = `<div class="upcoming-card"><div class="upcoming-icon">${isToday?'🔔':'📌'}</div><div><div class="upcoming-label">${isToday?'วันนี้มีเวรสวดมนต์!':'เวรสวดมนต์ครั้งถัดไป'}</div><div class="upcoming-name">${upcoming.teacher}</div><div class="upcoming-date">${upcoming.display}</div></div></div>`;
 }
 
-// ========== SCHEDULE ==========
 function renderSchedule() {
   const search = document.getElementById('searchInput').value.trim().toLowerCase();
   const term = parseInt(document.getElementById('termFilter').value);
   const today = todayStr();
-
-  let filtered = schedule.filter(s => {
+  const filtered = schedule.filter(s => {
     if (term && s.term !== term) return false;
     if (search && !s.teacher.toLowerCase().includes(search)) return false;
     return true;
   });
-
-  // group by month
   const months = {};
-  filtered.forEach((s, idx) => {
-    const key = s.date.substring(0, 7);
-    if (!months[key]) months[key] = { label: s.display.split(' ').slice(2).join(' '), rows: [] };
-    months[key].rows.push({ ...s, globalIdx: schedule.indexOf(s) });
+  filtered.forEach(s => {
+    const key = s.date.substring(0,7);
+    if (!months[key]) months[key] = [];
+    months[key].push(s);
   });
-
   const pending = swapRequests.filter(r => r.status === 'รอยืนยัน');
-
-  let html = '';
-  let num = 1;
-  for (const [key, group] of Object.entries(months)) {
-    const parts = group.rows[0].display.split(' ');
-    const monthLabel = parts[3] + ' ' + parts[4] + ' ' + parts[5];
-    html += `<div class="month-section"><div class="month-label">📅 ${monthLabel}</div>`;
-    group.rows.forEach(s => {
-      const isPast = s.date < today;
-      const isToday = s.date === today;
-      const hasPending = pending.find(r => r.fromDate === s.date || r.toDate === s.date);
-      let badge = '';
-      if (hasPending) badge = `<span class="swap-badge swap-pending">รอแลก</span>`;
-      const swapDone = swapRequests.find(r => r.status === 'แลกแล้ว' && (r.fromDate === s.date || r.toDate === s.date));
-      if (swapDone) badge = `<span class="swap-badge swap-done">แลกแล้ว</span>`;
-      html += `
-        <div class="duty-row ${isPast?'past':''} ${isToday?'today':''}">
-          <div class="duty-num">${num}</div>
-          <div class="duty-date">
-            <strong>${s.display}</strong>
-            ภาคเรียนที่ ${s.term}
-          </div>
-          <div class="duty-teacher">${s.teacher}${badge}</div>
-          ${!isPast ? `<button class="btn-swap" onclick="openSwapModal('${s.date}')">แลกเวร</button>` : ''}
-        </div>`;
+  let html = ''; let num = 1;
+  for (const rows of Object.values(months)) {
+    const parts = rows[0].display.split(' ');
+    html += `<div class="month-section"><div class="month-label">📅 ${parts[3]} ${parts[4]} ${parts[5]}</div>`;
+    rows.forEach(s => {
+      const isPast = s.date < today, isToday2 = s.date === today;
+      const hp = pending.find(r => r.fromDate===s.date||r.toDate===s.date);
+      const hd = swapRequests.find(r => r.status==='แลกแล้ว'&&(r.fromDate===s.date||r.toDate===s.date));
+      const badge = hp?'<span class="swap-badge swap-pending">รอแลก</span>':hd?'<span class="swap-badge swap-done">แลกแล้ว</span>':'';
+      html += `<div class="duty-row${isPast?' past':''}${isToday2?' today':''}"><div class="duty-num">${num}</div><div class="duty-date"><strong>${s.display}</strong>ภาคเรียนที่ ${s.term}</div><div class="duty-teacher">${s.teacher}${badge}</div>${!isPast?`<button class="btn-swap" onclick="openSwapModal('${s.date}')">แลกเวร</button>`:''}</div>`;
       num++;
     });
     html += '</div>';
   }
-
-  if (!html) html = `<div class="empty-state"><span class="icon">🌿</span><p>ไม่พบข้อมูลที่ค้นหา</p></div>`;
+  if (!html) html = '<div class="empty-state"><span class="icon">🌿</span><p>ไม่พบข้อมูล</p></div>';
   document.getElementById('scheduleList').innerHTML = html;
 }
 
-// ========== SWAP ==========
 function openSwapModal(fromDate) {
-  const fromEntry = schedule.find(s => s.date === fromDate);
   const today = todayStr();
-
-  const fromSel = document.getElementById('swapFromDate');
-  const toSel = document.getElementById('swapToDate');
-
-  fromSel.innerHTML = `<option value="${fromDate}">${fromEntry.display} — ${fromEntry.teacher}</option>`;
-
-  toSel.innerHTML = schedule
-    .filter(s => s.date !== fromDate && s.date >= today)
-    .map(s => `<option value="${s.date}">${s.display} — ${s.teacher}</option>`)
-    .join('');
-
+  const fromEntry = schedule.find(s => s.date === fromDate);
+  document.getElementById('swapFromDate').innerHTML = `<option value="${fromDate}">${fromEntry.display} — ${fromEntry.teacher}</option>`;
+  document.getElementById('swapToDate').innerHTML = schedule.filter(s => s.date !== fromDate && s.date >= today).map(s => `<option value="${s.date}">${s.display} — ${s.teacher}</option>`).join('');
   document.getElementById('swapNote').value = '';
   document.getElementById('swapModal').classList.add('open');
 }
 
-function closeModal() {
-  document.getElementById('swapModal').classList.remove('open');
-}
+function closeModal() { document.getElementById('swapModal').classList.remove('open'); }
 
-function submitSwap() {
+async function submitSwap() {
   const fromDate = document.getElementById('swapFromDate').value;
   const toDate = document.getElementById('swapToDate').value;
   const note = document.getElementById('swapNote').value;
-
   const fromEntry = schedule.find(s => s.date === fromDate);
   const toEntry = schedule.find(s => s.date === toDate);
-
-  const swap = {
-    id: Math.random().toString(36).substring(2, 10),
-    fromDate, fromTeacher: fromEntry.teacher,
-    toDate, toTeacher: toEntry.teacher,
-    note, status: 'รอยืนยัน',
-    timestamp: new Date().toLocaleString('th-TH')
-  };
-
-  closeModal();
-  showToast('⏳ กำลังส่งคำขอ...');
-  if (SCRIPT_URL) {
-    fetch(SCRIPT_URL + '?action=requestSwap&fromDate=' + fromDate + '&fromTeacher=' + encodeURIComponent(fromEntry.teacher) + '&toDate=' + toDate + '&toTeacher=' + encodeURIComponent(toEntry.teacher) + '&note=' + encodeURIComponent(note))
-      .then(r=>r.json()).then(async res => {
-        await loadFromServer();
-        renderSchedule(); renderSwaps(); renderUpcoming();
-        showToast('✅ ส่งคำขอแลกเวรแล้ว รอการยืนยัน');
-      }).catch(() => showToast('❌ เกิดข้อผิดพลาด กรุณาลองใหม่'));
-  } else {
-    swapRequests.push(swap);
-    renderSchedule(); renderSwaps();
-    showToast('✅ ส่งคำขอแลกเวรแล้ว');
-  }
+  closeModal(); showToast('⏳ กำลังส่งคำขอ...');
+  try {
+    await jsonp({action:'requestSwap', fromDate, fromTeacher: fromEntry.teacher, toDate, toTeacher: toEntry.teacher, note});
+    await loadData(); renderSchedule(); renderSwaps(); renderUpcoming();
+    showToast('✅ ส่งคำขอแลกเวรแล้ว รอการยืนยัน');
+  } catch(e) { showToast('❌ เกิดข้อผิดพลาด กรุณาลองใหม่'); }
 }
 
-function confirmSwap(id) {
+async function confirmSwap(id) {
   showToast('⏳ กำลังยืนยัน...');
-  if (SCRIPT_URL) {
-    fetch(SCRIPT_URL + '?action=confirmSwap&id=' + id)
-      .then(r=>r.json()).then(async res => {
-        await loadFromServer();
-        renderSchedule(); renderSwaps(); renderUpcoming();
-        showToast('✅ ยืนยันการแลกเวรเรียบร้อย');
-      }).catch(() => showToast('❌ เกิดข้อผิดพลาด'));
-  } else {
-    const swap = swapRequests.find(r => r.id === id);
-    if (!swap) return;
-    const from = schedule.find(s => s.date === swap.fromDate);
-    const to = schedule.find(s => s.date === swap.toDate);
-    if (from && to) [from.teacher, to.teacher] = [to.teacher, from.teacher];
-    swap.status = 'แลกแล้ว';
-    renderSchedule(); renderSwaps(); renderUpcoming();
-    showToast('✅ ยืนยันการแลกเวรเรียบร้อย');
-  }
+  try {
+    await jsonp({action:'confirmSwap', id});
+    await loadData();
+    switchTab('schedule');
+    renderSchedule(); renderUpcoming();
+    showToast('✅ ยืนยันการแลกแล้ว ตารางอัปเดตแล้ว');
+  } catch(e) { showToast('❌ เกิดข้อผิดพลาด'); }
 }
 
-function cancelSwap(id) {
-  if (SCRIPT_URL) {
-    fetch(SCRIPT_URL + '?action=cancelSwap&id=' + id)
-      .then(r=>r.json()).then(async () => {
-        await loadFromServer();
-        renderSwaps(); renderSchedule();
-        showToast('ยกเลิกคำขอแล้ว');
-      });
-  } else {
-    const swap = swapRequests.find(r => r.id === id);
-    if (swap) swap.status = 'ยกเลิก';
-    renderSwaps(); renderSchedule();
+async function cancelSwap(id) {
+  try {
+    await jsonp({action:'cancelSwap', id});
+    await loadData(); renderSwaps(); renderSchedule();
     showToast('ยกเลิกคำขอแล้ว');
-  }
+  } catch(e) { showToast('❌ เกิดข้อผิดพลาด'); }
 }
 
 function renderSwaps() {
   const active = swapRequests.filter(r => r.status !== 'ยกเลิก');
   const el = document.getElementById('swapList');
-  if (!active.length) {
-    el.innerHTML = `<div class="empty-state"><span class="icon">🌿</span><p>ยังไม่มีคำขอแลกเวร</p></div>`;
-    return;
-  }
-  const statusColor = { 'รอยืนยัน': '#fef3c7; color:#92400e', 'แลกแล้ว': '#d1fae5; color:#065f46' };
-  el.innerHTML = active.reverse().map(r => `
-    <div class="swap-item">
-      <div class="si-top">
-        <span class="si-badge" style="background:${statusColor[r.status] || '#f3f4f6; color:#374151'}">${r.status}</span>
-        <span class="si-id">รหัส: ${r.id}</span>
-        <span class="si-id" style="margin-left:auto">${r.timestamp}</span>
-      </div>
-      <div class="si-body">
-        <strong>${r.fromTeacher}</strong> ขอแลกเวร <strong>${r.fromDate}</strong><br>
-        กับ <strong>${r.toTeacher}</strong> วันที่ <strong>${r.toDate}</strong>
-        ${r.note ? `<br><em style="color:var(--text-light)">หมายเหตุ: ${r.note}</em>` : ''}
-      </div>
-      ${r.status === 'รอยืนยัน' ? `
-      <div class="si-actions">
-        <button class="btn-confirm" onclick="confirmSwap('${r.id}')">✅ ยืนยันการแลก</button>
-        <button class="btn-cancel-swap" onclick="cancelSwap('${r.id}')">✕ ยกเลิก</button>
-      </div>` : ''}
-    </div>`).join('');
+  if (!active.length) { el.innerHTML = '<div class="empty-state"><span class="icon">🌿</span><p>ยังไม่มีคำขอแลกเวร</p></div>'; return; }
+  const sc = {'รอยืนยัน':'#fef3c7;color:#92400e','แลกแล้ว':'#d1fae5;color:#065f46'};
+  el.innerHTML = [...active].reverse().map(r => `<div class="swap-item"><div class="si-top"><span class="si-badge" style="background:${sc[r.status]||'#f3f4f6;color:#374151'}">${r.status}</span><span class="si-id">รหัส: ${r.id}</span><span class="si-id" style="margin-left:auto">${r.timestamp}</span></div><div class="si-body"><strong>${r.fromTeacher}</strong> ขอแลกเวรวันที่ <strong>${r.fromDate}</strong> กับ <strong>${r.toTeacher}</strong> วันที่ <strong>${r.toDate}</strong>${r.note?`<br><em style="color:var(--tl)">หมายเหตุ: ${r.note}</em>`:''}</div>${r.status==='รอยืนยัน'?`<div class="si-actions"><button class="btn-confirm" onclick="confirmSwap('${r.id}')">✅ ยืนยันการแลก</button><button class="btn-cancel-swap" onclick="cancelSwap('${r.id}')">✕ ยกเลิก</button></div>`:''}</div>`).join('');
 }
 
-// ========== SUMMARY ==========
 function renderSummary() {
-  const counts = {};
-  schedule.forEach(s => {
-    if (!counts[s.teacher]) counts[s.teacher] = { s1: 0, s2: 0 };
-    counts[s.teacher]['s' + s.term]++;
-  });
-  const today = todayStr();
-  const remaining = {};
-  schedule.filter(s => s.date >= today).forEach(s => {
-    if (!remaining[s.teacher]) remaining[s.teacher] = 0;
-    remaining[s.teacher]++;
-  });
-
+  const counts = {}; const today = todayStr(); const rem = {};
+  schedule.forEach(s => { if(!counts[s.teacher]) counts[s.teacher]={s1:0,s2:0}; counts[s.teacher]['s'+s.term]++; });
+  schedule.filter(s => s.date >= today).forEach(s => { if(!rem[s.teacher]) rem[s.teacher]=0; rem[s.teacher]++; });
   let html = '<div class="summary-grid">';
   for (const [name, c] of Object.entries(counts)) {
-    html += `
-      <div class="summary-card">
-        <div class="sc-name">${name.replace(/^(นางสาว|นาง|นาย)/,'<span style="font-size:11px;color:var(--text-light)">$1</span> ')}</div>
-        <div class="sc-num">${c.s1 + c.s2} <span style="font-size:14px;font-weight:400">วัน</span></div>
-        <div class="sc-sub">เทอม 1: ${c.s1} · เทอม 2: ${c.s2} · เหลือ: ${remaining[name]||0}</div>
-      </div>`;
+    html += `<div class="summary-card"><div class="sc-name">${name}</div><div class="sc-num">${c.s1+c.s2} <span style="font-size:14px;font-weight:400">วัน</span></div><div class="sc-sub">เทอม 1: ${c.s1} · เทอม 2: ${c.s2} · เหลือ: ${rem[name]||0}</div></div>`;
   }
   html += '</div>';
   document.getElementById('summaryContent').innerHTML = html;
 }
 
-// ========== TABS ==========
 function switchTab(tab) {
-  ['schedule','swaps','summary'].forEach(t => {
-    document.getElementById('tab-'+t).style.display = t === tab ? '' : 'none';
-  });
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', ['schedule','swaps','summary'][i] === tab);
-  });
-  if (tab === 'swaps') renderSwaps();
-  if (tab === 'summary') renderSummary();
+  ['schedule','swaps','summary'].forEach(t => { document.getElementById('tab-'+t).style.display = t===tab?'':'none'; });
+  document.querySelectorAll('.tab-btn').forEach((b,i) => { b.classList.toggle('active',['schedule','swaps','summary'][i]===tab); });
+  if (tab==='swaps') renderSwaps();
+  if (tab==='summary') renderSummary();
 }
 
 async function refreshData() {
-  await loadFromServer();
-  renderSchedule();
-  renderUpcoming();
-  showToast('🔄 อัปเดตข้อมูลแล้ว');
+  showToast('⏳ กำลังโหลด...');
+  await loadData(); renderSchedule(); renderUpcoming();
+  showToast('✅ อัปเดตแล้ว');
 }
 
-// ========== INIT ==========
-loadFromServer().then(() => {
-  renderUpcoming();
-  renderSchedule();
-});
-
-document.getElementById('swapModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+document.getElementById('swapModal').addEventListener('click', function(e) { if(e.target===this) closeModal(); });
+loadData().then(() => { renderUpcoming(); renderSchedule(); });
 </script>
 </body>
 </html>

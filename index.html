@@ -219,7 +219,10 @@ function renderSchedule() {
   let html = ''; let num = 1;
   for (const rows of Object.values(months)) {
     const parts = rows[0].display.split(' ');
-    html += `<div class="month-section"><div class="month-label">📅 ${parts[3]} ${parts[4]} ${parts[5]}</div>`;
+    // display = "วันศุกร์ที่ 22 พฤษภาคม พ.ศ. 2569"
+    // parts:  0       1   2          3     4    5
+    const monthLabel = parts.slice(2).join(' ');
+    html += `<div class="month-section"><div class="month-label">📅 ${monthLabel}</div>`;
     rows.forEach(s => {
       const isPast = s.date < today, isToday2 = s.date === today;
       const hp = pending.find(r => r.fromDate===s.date||r.toDate===s.date);
